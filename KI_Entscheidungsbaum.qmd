@@ -1,0 +1,143 @@
+---
+title: "KI-Entscheidungsbaum"
+format: revealjs
+editor: source
+jupyter: python3
+---
+
+## Entscheidungsbäume
+
+Vorab: Es gibt nicht DIE Methode, es gibt unzählige!
+
+In der Literatur wird meist die Klassifizierung von Orchideen (Iris) als Beispiel verwendet. Die Datenbasis ist eine Tabelle mit 150 untersuchten und gelabelten Orchideen, die zu 3 Arten gehören:
+
+-   Iris-Setosa
+-   Iris-Virginca
+-   Iris-Versicolor
+
+Die zugehörige csv-Datei sieht so aus (Ausschnitt):
+
+``` python
+5.1,3.5,1.4,0.2,Iris-setosa
+4.9,3.0,1.4,0.2,Iris-setosa
+4.7,3.2,1.3,0.2,Iris-setosa
+6.8,3.2,5.9,2.3,Iris-virginica
+6.7,3.3,5.7,2.5,Iris-virginica
+6.7,3.0,5.2,2.3,Iris-virginica
+6.3,2.3,4.4,1.3,Iris-versicolor
+5.6,3.0,4.1,1.3,Iris-versicolor
+5.5,2.5,4.0,1.3,Iris-versicolor
+```
+
+Aufbereitet als Tabelle:
+| Sepal Length | Sepal Width | Petal Length | Petal Width | Species         |
+|-------------:|------------:|-------------:|------------:|-----------------|
+| 5.1 | 3.5 | 1.4 | 0.2 | Iris-setosa     |
+| 4.9 | 3.0 | 1.4 | 0.2 | Iris-setosa     |
+| 4.7 | 3.2 | 1.3 | 0.2 | Iris-setosa     |
+| 6.8 | 3.2 | 5.9 | 2.3 | Iris-virginica  |
+| 6.7 | 3.3 | 5.7 | 2.5 | Iris-virginica  |
+| 6.7 | 3.0 | 5.2 | 2.3 | Iris-virginica  |
+| 6.3 | 2.3 | 4.4 | 1.3 | Iris-versicolor |
+| 5.6 | 3.0 | 4.1 | 1.3 | Iris-versicolor |
+| 5.5 | 2.5 | 4.0 | 1.3 | Iris-versicolor |
+
+Sepa = Kelchblatt, Petal = Blütenblatt
+
+Du siehst, dass die Eigenschaften (Blattlängen und -breiten) numerische Angaben sind. Das ist für Comuter/KI gut, da damit *gerechnet* und *verglichen* werden kann. *Rechnen* ergibt bei diesen Zahlen nicht viel Sinn -- feine Vergleiche (also um wie viel ist ein Blatt länger) aber durchaus. Wir sprechen damit von *metrischen* Werten.\
+Noten wären *ordinale* Werte, weil man sie zwar ordnen kann, aber *feine* Unterschiede keine Rolle spielen.\
+Bei *Werten*, die keine Zahlen sondern Kategorien sind, spricht man von *nominalen* Werte (Setosa, Virginica, Versicolor).
+
+Wenn die KI fertig trainiert ist, gibt ein Sammler nur die Blattlängen ein und bekommt die Art der Orchidee zurück -- auch wenn die exakten Werte *nicht* in der Liste auftreten.
+
+Da dieses Beispiel zwar klassisch ist, aber nicht aus deinem Lebensumfeld stammt, betrachten wir ein anderes Szenario:
+
+**Müssen wir noch Abi-Prüfungen schreiben?** Über den gesamten Verlauf der Oberstufe wurden (exemplarisch) in den Fächern .... statistidsche Daten gesammelt -- über Jahre hinweg:
+
+-   Ethik
+-   ...
+-   ...
+
+Interessiert hat dabei
+
+-   Anwesenheit in Prozent
+-   Prozentsatz der angefertigten Übungsaufgaben
+-   
+-   Wurde das Fach bestanden
+
+(Beachte, dass dieser Ansatz nur klassifiziert, aber keine Regression darstellt -- es wird also keine Abi-Note vohergesagt ... liegt aber an diesen Daten! Mit anderen Daten (Notenbild ab der 8. Klasse) wäre auch eine Vorhersage der Abi-Note denkbar!)
+
+Hier ein Einblick in die Daten:
+
+| SuS | Fach  | Fehlzeit \> 10 % | Übungen \> 50 % | Bestanden |
+|-----|-------|------------------|-----------------|-----------|
+| 1   | Mathe | Ja               | Ja              | Nein      |
+| 2   | Ethik | Ja               | Ja              | Ja        |
+| 3   | IT    | Nein             | Nein            | Ja        |
+| 4   | Mathe | Nein             | Nein            | Nein      |
+| 5   | Mathe | Nein             | Ja              | Ja        |
+| 6   | IT    | Ja               | Nein            | Nein      |
+| 7   | Ethik | Nein             | Nein            | Ja        |
+| 8   | Ethik | Nein             | Nein            | Ja        |
+| 9   | IT    | Ja               | Ja              | Ja        |
+
+Es fällt auf, dass hier keine numerischen Daten vorliegen -- außer der 
+Schülernummer, die keine Rolle spielt. Diese Spalte würde beim Putzen 
+der Daten als erstes gelöscht.
+
+Um einen Schüler nach diesen Daten bestehen oder durchfallen zu lassen, 
+soll ein Baum erstellt werden. Es stellt sich die Frage, nach welchem der 
+3 Attribute (Fach, Fehlzeit, Übungen) die Daten zuerst aufgeteilt werden.
+
+An dieser Stelle trennt sich *Verständnis* von *Rezept*. Das Rezept ist relativ einfach (es gibt verschiedene Rezepte):
+
+1.  Wähle ein Attribut -- z.B. Fach
+2.  Berechne die Gini-Impurity der einzelnen Attributwerte (Fächer)
+3.  Berechne die gewichtete Gini-Imputity für das gesamte Attribut.
+4.  Wiederhole 1-3 für jedes Attribut (Anwesenheit, Übungen)
+5.  Wähle das Attribut mit der kleinsten Gini-Impurity
+6.  Wähle den Attributwert mit der geringsten Gini-Impurity
+7.  Teile die Daten nach Ja / Nein bezüglich dieses Attributs auf.
+8.  Führe in jedem Zweig des Baumes mit den dort enthaltenen Daten die Schritte 1-7 erneut aus.
+
+**Was ist Gini-Impurity**\
+Das ist ein Zahlenwert, der *Unreinheit* (Gemischtheit) der Daten beschreibt. Im Prinzip geht es um *Häufigkeiten*.
+
+**Beispiel Fach**
+
+Es gibt 3 Fächer Mathe, Ethik, IT.
+
+In Mathe (3 Einträge) hat 1 Schüler bestanden und 2 nicht.
+
+$$Gini_{Mathe} = 1 - \left(\frac{1}{3}\right)^2 - \left(\frac{2}{3}\right)^2 = 0,44$$
+
+**Aufgabe**\
+Erstelle die Gini-Impurity für die anderen beiden Fächer.
+
+Nun gilt es, die *gewichtete Gini-Impurity* zu berechnen:
+
+$$Gini_{Fach} = Gini_{Mathe} \cdot \frac{\text{Anzahl Math-Zeilen}}{\text{Gesamtzahl Zeilen}} +
+ Gini_{Ethik} \cdot \frac{\text{Anzahl Ethik-Zeilen}}{\text{Gesamtzahl Zeilen}} +
+ Gini_{IT} \cdot \frac{\text{Anzahl IT-Zeilen}}{\text{Gesamtzahl Zeilen}} $$
+
+Berechne diesen Wert und wenn du erfolgreich warst, solltest du $0{,}29$ erhalten.
+
+**Auftrag**\
+Berechne die gewichtete Gini-Impurity für die Attributwerte *Fehlzeit* und *Übung*.
+
+Ziel: 0,4 und 0,35
+
+Wie du siehst, besitzt *Fach* die geringste gewichtete Gini-Impurity. Damit ist der erste Knoten im Baum das Kriterium Fach und wir splitten nach Ethik Ja/Nein, die von den drei Fächern hat Ethik die kleinste Gini-Impurity (0). Wenn du die Datenaufteilung betrachtest ... Ethik wird immer bestanden! Auf dieser Seite ist der Baum beendet!
+
+Für die andere Seite du Zeilen aus den Daten entfernen, nämlich 2, 7 und 8.
+
+| SuS | Fach  | Fehlzeit \> 10 % | Übungen \> 50 % | Bestanden |
+|-----|-------|------------------|-----------------|-----------|
+| 1   | Mathe | Ja               | Ja              | Nein      |
+| 3   | IT    | Nein             | Nein            | Ja        |
+| 4   | Mathe | Nein             | Nein            | Nein      |
+| 5   | Mathe | Nein             | Ja              | Ja        |
+| 6   | IT    | Ja               | Nein            | Nein      |
+| 9   | IT    | Ja               | Ja              | Ja        |
+
+Nun startet der Prozess erneut.

@@ -1,0 +1,58 @@
+\documentclass[12pt]{scrreprt}
+\usepackage{arbeitsblatt}
+\usepackage{pifont}
+
+\title{Mensch - Maschine}
+\ohead{Informatik G11}
+
+\begin{document}
+\section*{Anleitung}
+\subsection*{Wann endet das Spiel?}
+\begin{itemize}
+	\item Spieler erreicht die gegenüberliegende Seite 
+	\item Spieler hat keine Figuren mehr
+	\item Spieler kann nicht mehr ziehen
+\end{itemize}
+
+\subsection*{Erlaubte Züge Mensch}
+\begin{itemize}
+	\item Mensch darf nicht mit linker Figur beginnen -- liefert nur symmetrische Positionen, aber viel mehr Zugkarten!
+	\item Geradeaus, wenn frei
+	\item Schräg zum Schlagen
+\end{itemize}
+
+\subsection*{Erlaubte Züge Maschine}
+Vereinfachte Version zum Zeitsparen!
+
+\begin{enumerate}
+	\item Suche Situation in der Situationsübersicht
+	\item Finde mögliche Züge in der Zugübersicht
+	\item Wähle zufälligen Zug (z.B. Verdeckte Farbkarte wählen)
+	\item Protokolliere den Zug (z.B. A1 rot)
+\end{enumerate}
+
+\subsection*{Ablauf}
+\begin{itemize}
+	\item Der Mensch beginnt immer
+	\item Es wird abwechselnd gezogen, bis der Siger ermittelt ist.
+	\item Verliert die Maschine, so wird der letzte Zug (Farbpunkt) durchgestrichen
+	\item Der Sieger wird aufgeschrieben.
+\end{itemize}
+
+\newpage
+
+\section*{Beispiel-Ablauf}
+
+\begin{itemize}
+	\item Mensch rechts $\Rightarrow$ A1
+	\item Maschine RGY $\Rightarrow$ R (Figurverlust Mensch)
+	\item Mensch mittig $\Rightarrow$ B5
+	\item Maschine RGBY $\Rightarrow$ G
+	\item Mensch mittig $\Rightarrow$ Sieg
+	\item Streichen der Farbe Grün auf B5
+	\item Sieger Mensch notieren
+	\item \textbf{Nächste Runde}
+\end{itemize}
+
+
+\end{document}

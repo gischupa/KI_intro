@@ -1,0 +1,110 @@
+﻿\begin{tikzpicture}
+
+\def\redtriangle{\draw[fill=gray!80](0,0) -- ++(0:1) -++(120:1) -- cycle; }
+
+\def\greentriangle{\draw[fill=gray!80](0,0) -- ++(0:1) -++(120:1) -- cycle; }
+
+\def\greentriangleK{
+\draw[fill=gray!80](0,0) -- ++(0:1) -++(120:1) -- cycle;
+\draw(0.5cm,0.3cm) node[]{KI};
+}
+
+\def\greentriangleKStripe{
+\draw[fill=gray!80](0,0) -- ++(0:1) -++(120:1) -- cycle;
+\draw(0.5cm,0.3cm) node[]{KI};
+\draw[line width=0.4mm](60:0.6) -- ++(0:0.4);
+}
+
+\def\redcircle{
+\draw[fill=gray!80](0,0) circle(0.4);
+}
+
+\def\greencircle{
+\draw[fill=gray!80](0,0) circle(0.4);
+}
+
+\def\greencircleStripe{
+\draw[fill=gray!80](0,0) circle(0.4);
+\draw[line width=0.4mm](0,0)++(225:0.4) -- ++(45:0.8);
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% KOMPLETT GEMISCHTE ANORDNUNG
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{scope}
+
+% Kreise (gemischt)
+\begin{scope}[xshift=0.6cm,yshift=0.2cm]
+\greencircleStripe
+\end{scope}
+
+\begin{scope}[xshift=3.8cm,yshift=-0.8cm]
+\redcircle
+\end{scope}
+
+\begin{scope}[xshift=2.1cm,yshift=1.3cm]
+\greencircleStripe
+\end{scope}
+
+\begin{scope}[xshift=5.2cm,yshift=-0.3cm]
+\redcircle
+\end{scope}
+
+\begin{scope}[xshift=1.4cm,yshift=-1.7cm]
+\redcircle
+\end{scope}
+
+\begin{scope}[xshift=4.6cm,yshift=1.1cm]
+\greencircleStripe
+\end{scope}
+
+\begin{scope}[xshift=3.0cm,yshift=-2.1cm]
+\redcircle
+\end{scope}
+
+% Dreiecke rot (verteilt)
+\begin{scope}[xshift=0.2cm,yshift=-1.2cm,rotate=12]
+\redtriangle
+\end{scope}
+
+\begin{scope}[xshift=4.9cm,yshift=-2.2cm,rotate=-10]
+\redtriangle
+\end{scope}
+
+\begin{scope}[xshift=2.7cm,yshift=0.9cm,rotate=18]
+\redtriangle
+\end{scope}
+
+\begin{scope}[xshift=5.8cm,yshift=0.6cm,rotate=-7]
+\redtriangle
+\end{scope}
+
+% KI-Dreiecke (ebenfalls verstreut)
+\begin{scope}[xshift=0.5cm,yshift=0.8cm,rotate=9]
+\greentriangleK
+\end{scope}
+
+\begin{scope}[xshift=3.6cm,yshift=1.9cm,rotate=-14]
+\greentriangleK
+\end{scope}
+
+\begin{scope}[xshift=2.4cm,yshift=-1.4cm,rotate=11]
+\greentriangleK
+\end{scope}
+
+\begin{scope}[xshift=5.0cm,yshift=-1.3cm,rotate=-6]
+\greentriangleK
+\end{scope}
+
+\begin{scope}[xshift=1.2cm,yshift=-1.cm,rotate=15]
+\greentriangleK
+\end{scope}
+
+\begin{scope}[xshift=4.2cm,yshift=-1.9cm,rotate=3]
+\greentriangleKStripe
+\end{scope}
+
+\end{scope}
+
+\end{tikzpicture}

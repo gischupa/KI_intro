@@ -1,0 +1,31 @@
+﻿\begin{tikzpicture}[
+            level distance=20mm,
+				level 1/.style={ sibling distance=50mm},
+				level 2/.style={ sibling distance=20mm},
+                every node/.style = {
+				},
+box/.style    = { 
+	minimum size = 10mm,
+				shape=rectangle,
+				rounded corners,
+				draw,
+				align=center,
+				top color=white,
+				bottom color=blue!20
+},
+dummy/.style    = { fill=white}
+]
+\node[box]{Entfernung $>2\km$}
+child[black]{ node[box]{Laufen}       
+edge from parent node[dummy, xshift=-0cm, minimum size=1mm,]{Nein} 
+}
+child[black]{node[box]{Regen} 
+       child[black]{node[box]{Bike} edge from parent node[dummy, xshift=-0cm, minimum size=1mm,]{Nein}  
+         } 
+       child[black]{node[box]{Auto} edge from parent node[dummy, xshift=-0cm, minimum size=1mm,]{Ja} 
+}     
+edge from parent node[dummy, xshift=-0cm, minimum size=1mm,]{Ja} 
+}
+;
+
+\end{tikzpicture}

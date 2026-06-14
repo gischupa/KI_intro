@@ -1,0 +1,27 @@
+﻿\begin{tikzpicture}[
+				level 1/.style={ sibling distance=50mm},
+				level 2/.style={ sibling distance=20mm},
+                every node/.style = {
+				},
+box/.style    = { 
+	minimum size = 10mm,
+				shape=rectangle,
+				rounded corners,
+				draw,
+				align=center,
+				top color=white,
+				bottom color=blue!20
+},
+dummy/.style    = { fill=white}
+]
+\node[box]{Form}
+child[black]{ 
+     node[box]{grün} 
+    edge from parent node[dummy, xshift=-0cm, minimum size=1mm,]{\tiny Kreis} 
+}
+child[black]{node[box]{rot} 
+edge from parent node[dummy, xshift=-0.cm]{\tiny Dreieck}
+}
+;
+
+\end{tikzpicture}
